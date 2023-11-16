@@ -36,3 +36,11 @@ C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\obj\Debug\net6.0\ref
 C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\obj\Debug\net6.0\WEB_API_ALUMNOS.pdb
 C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\obj\Debug\net6.0\WEB_API_ALUMNOS.genruntimeconfig.cache
 C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\obj\Debug\net6.0\ref\WEB_API_ALUMNOS.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\obj\Debug\net6.0\WEB_API_ALUMNOS.sourcelink.json
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Oscar\source\repos\WEB_API_ALUMNOS\WEB_API_ALUMNOS\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
