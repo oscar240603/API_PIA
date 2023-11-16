@@ -5,6 +5,8 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace WEB_API_ALUMNOS.Controllers
 {
@@ -12,44 +14,65 @@ namespace WEB_API_ALUMNOS.Controllers
     [ApiController]
     public class AutenticacionController : ControllerBase
     {
+        private readonly string cadenaSQL;
         private readonly string secrectkey;
         
         public AutenticacionController(IConfiguration config)
         {
             secrectkey = config.GetSection("settings").GetSection("secretkey").ToString();
+            cadenaSQL = config.GetConnectionString("CadenaSQL");
+
         }
 
         [HttpPost]
         [Route("Validar")]
-        public IActionResult Validar([FromBody] Usuario request)
+        public IActionResult Validar([FromBody] Cuenta request)
         {
-            if(request.usuario == "admin" && request.Clave == "admin")
+            
+            var conexion = new SqlConnection(cadenaSQL);
+
+            
+            using (SqlConnection connection = new SqlConnection(cadenaSQL))
             {
-                var keyBytes = Encoding.ASCII.GetBytes(secrectkey);
-                var claims = new ClaimsIdentity();
+                connection.Open();
 
-                claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, request.usuario));
-
-                var tokenDescriptor = new SecurityTokenDescriptor
+                // Consulta para verificar las credenciales
+                string query = "SELECT COUNT(*) FROM Credenciales WHERE Usuario = @Usuario AND Contra = @Contra";
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    Subject = claims,
-                    Expires = DateTime.UtcNow.AddMinutes(5),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
-                };
+                    command.Parameters.AddWithValue("@Usuario", request.Usuario);
+                    command.Parameters.AddWithValue("@Contra", request.Contra);
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+                    int count = (int)command.ExecuteScalar();
 
-                string tokenCreado = tokenHandler.WriteToken(tokenConfig);
+                    if (count > 0)
+                    {
+                        // Credenciales válidas
+                        var keyBytes = Encoding.ASCII.GetBytes(secrectkey);
+                        var claims = new ClaimsIdentity();
+                        claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, request.Usuario));
 
-                return StatusCode(StatusCodes.Status200OK, new {token = tokenCreado});
+                        var tokenDescriptor = new SecurityTokenDescriptor
+                        {
+                            Subject = claims,
+                            Expires = DateTime.UtcNow.AddMinutes(5),
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
+                        };
+
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var tokenConfig = tokenHandler.CreateToken(tokenDescriptor);
+
+                        string tokenCreado = tokenHandler.WriteToken(tokenConfig);
+
+                        return StatusCode(StatusCodes.Status200OK, new { token = tokenCreado });
+                    }
+                }
             }
-            else
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized, new { token = "" });
-            }
 
+            // Credenciales inválidas
+            return StatusCode(StatusCodes.Status401Unauthorized, new { token = "" });
         }
+
 
 
     }
